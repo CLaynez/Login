@@ -22,7 +22,7 @@
 }
 
 /* Estilo para el enlace activo (página actual) */
-.active {
+.navbar a:focus {
   background-color: #4CAF50; /* Color de fondo */
   color: white; /* Color del texto */
 }
