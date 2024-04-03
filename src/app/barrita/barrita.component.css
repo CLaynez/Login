@@ -1,0 +1,28 @@
+/* Estilos generales */
+.navbar {
+  background-color: #333; /* Color de fondo */
+  overflow: hidden;
+  width: 100%; /* Ancho completo */
+}
+
+/* Estilos para los enlaces */
+.navbar a {
+  float: left; /* Alineación a la izquierda */
+  display: block; /* Convertir en bloque para ocupar todo el ancho disponible */
+  color: white; /* Color del texto */
+  text-align: center; /* Alineación del texto */
+  padding: 14px 20px; /* Espaciado interno (arriba y abajo) */
+  text-decoration: none; /* Quitar subrayado de los enlaces */
+}
+
+/* Estilos al pasar el ratón sobre los enlaces */
+.navbar a:hover {
+  background-color: #16cc1c; /* Cambiar color de fondo al pasar el ratón */
+  color: black; /* Cambiar color del texto */
+}
+
+/* Estilo para el enlace activo (página actual) */
+.active {
+  background-color: #4CAF50; /* Color de fondo */
+  color: white; /* Color del texto */
+}
