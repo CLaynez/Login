@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, } from '@angular/core';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -6,13 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./inicio-sesion.component.css']
 })
 export class InicioSesionComponent {
-  email: string = "";
   password: string = "";
-
-  constructor() {}
+  email: string = "";
+  constructor() { }
 
   login() {
-    console.log(this.email);
     console.log(this.password);
+    console.log(this.email);
   }
 }
