@@ -1,4 +1,5 @@
 import { Component, } from '@angular/core';
+import { ServicioService } from '../services/servicio.service';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -8,10 +9,15 @@ import { Component, } from '@angular/core';
 export class InicioSesionComponent {
   password: string = "";
   email: string = "";
-  constructor() { }
+  data: string[] = [];
+  constructor(private servicio: ServicioService) { 
+    this.data = servicio.getData();
+  }
 
   login() {
     console.log(this.password);
     console.log(this.email);
+    this.servicio.enviarDatos(this.password);
+    this.servicio.enviarDatos(this.email);
   }
 }
