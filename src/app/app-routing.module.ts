@@ -4,9 +4,10 @@ import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from './registro/registro.component';
 
 const routes: Routes = [
-  { path: "", component: InicioSesionComponent },
   { path: "login", component: InicioSesionComponent},
   { path: "register", component: RegistroComponent},
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
