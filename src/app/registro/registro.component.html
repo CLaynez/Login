@@ -9,7 +9,7 @@
         [maxlength]="emailmaxLength"
         [(ngModel)]="email"
       />
-      <span *ngIf="email && !validarEmail(email)">Invalid E-mail</span>
+      <span *ngIf="email && !validarEmail()">Invalid E-mail</span>
       <input
         type="password"
         name="password"

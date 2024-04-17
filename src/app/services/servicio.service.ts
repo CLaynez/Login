@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
 export class ServicioService {
   
   urlinicio: string = "http://localhost:8008/recibo";
-  urlregistro: string = "http://localhost:8008/new";
+  urlregistro: string = "http://localhost:8008/register";
   
   constructor(private http: HttpClient) { }
 

@@ -16,9 +16,9 @@ export class RegistroComponent {
 
   constructor(private servicio: ServicioService) {}
 
-  validarEmail(email: string): boolean {
+  validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
+    return regex.test(this.email);
   }
 
   register() {
@@ -43,7 +43,7 @@ export class RegistroComponent {
     let datosJson: string = JSON.stringify(datos);
 
     try {
-      const response = await this.servicio.registrar(datosJson).toPromise();
+      const response = await this.servicio.registrar(datosJson).toPromise();  
       console.log('Solicitud POST exitosa', response);
       // Mostrar mensaje de éxito al usuario
       alert('La solicitud se ha enviado con éxito.');

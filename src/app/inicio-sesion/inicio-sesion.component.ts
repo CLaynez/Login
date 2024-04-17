@@ -1,4 +1,4 @@
-import { Component, } from '@angular/core';
+import { Component } from '@angular/core';
 import { ServicioService } from '../services/servicio.service';
 
 @Component({
@@ -16,17 +16,14 @@ export class InicioSesionComponent {
 
   constructor(private servicio: ServicioService) {}
 
-  validarEmail(email: string): boolean {
+  validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
+    return regex.test(this.email);
+
+    this.login();
   }
 
   async login() {
-    if(!this.validarEmail){
-      alert("Incorrect E-mail");
-    }else if(this.email.length < 5 || this.email.length > 50 || this.password.length < 5 || this.password.length > 20){
-      alert("Data input error, please revise your email or password");
-    }else{
       let datos: any = {
         email: this.email,
         password: this.password
@@ -44,5 +41,4 @@ export class InicioSesionComponent {
         alert('Se ha producido un error al enviar la solicitud.');
       }
     }
-  }
 }
