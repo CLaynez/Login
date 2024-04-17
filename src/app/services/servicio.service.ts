@@ -7,13 +7,27 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ServicioService {
-  url: string = "http://localhost:8008/recibo";
+  
+  urlinicio: string = "http://localhost:8008/recibo";
+  urlregistro: string = "http://localhost:8008/new";
   
   constructor(private http: HttpClient) { }
 
-  enviarDatos(data: any) {
+  iniciarSesion(data: any) {
     console.log(data);
-    return this.http.post<any>(this.url, data)
+    return this.http.post<any>(this.urlinicio, data)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error de HTTP:', error.status);
+          console.error('Mensaje:', error.message);
+          return throwError(error);
+        })
+      );
+  }
+
+  registrar(data: any) {
+    console.log(data);
+    return this.http.post<any>(this.urlregistro, data)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error de HTTP:', error.status);

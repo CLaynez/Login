@@ -6,18 +6,25 @@
         name="email"
         placeholder="Email"
         required="required"
+        [maxlength]="emailmaxLength"
+        [(ngModel)]="email"
       />
+      <span *ngIf="email && !validarEmail(email)">Invalid E-mail</span>
       <input
         type="password"
         name="password"
         placeholder="Password"
         required="required"
+        [maxlength]="passwordmaxLength"
+        [(ngModel)]="password"
       />
       <input
         type="password"
         name="password"
         placeholder="Repeat the password"
         required="required"
+        [maxlength]="passwordmaxLength"
+        [(ngModel)]="confirmPassword"
       />
       <button type="submit" (click)="register()">Sign In</button>
     </form>
