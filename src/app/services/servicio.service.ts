@@ -8,8 +8,8 @@ import { throwError } from 'rxjs';
 })
 export class ServicioService {
   
-  urlinicio: string = "http://localhost:8008/recibo";
-  urlregistro: string = "http://localhost:8008/register";
+  urlinicio: string = "http://localhost:8008/loginaso/recibo";
+  urlregistro: string = "http://localhost:8008/loginaso/register";
   
   constructor(private http: HttpClient) { }
 
