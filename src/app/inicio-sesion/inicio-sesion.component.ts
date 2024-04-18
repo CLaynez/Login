@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { ServicioService } from '../services/servicio.service';
+import { AuthServiceService } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -9,12 +10,11 @@ import { ServicioService } from '../services/servicio.service';
 export class InicioSesionComponent {
   password: string = "";
   email: string = "";
-  mensajeDelBackend: string = "";
   emailmaxLength: number = 50;
   passwordmaxLength: number = 20;
   minLength: number = 5;
 
-  constructor(private servicio: ServicioService) {}
+  constructor(private servicio: ServicioService, private auth:AuthServiceService) {}
 
   validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -29,10 +29,8 @@ export class InicioSesionComponent {
       };
       let datosJson: string = JSON.stringify(datos);
       try {
-        const response = await this.servicio.iniciarSesion(datosJson).toPromise();
-        console.log('Solicitud POST exitosa', response);
+        const response = await this.servicio.iniciarSesion(datosJson);
         alert('La solicitud se ha enviado con éxito.');
-        this.mensajeDelBackend = response.message;
       } catch (error) {
         console.error('Error:', error);
         alert('Se ha producido un error al enviar la solicitud.');

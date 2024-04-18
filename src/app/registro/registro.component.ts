@@ -43,13 +43,10 @@ export class RegistroComponent {
     let datosJson: string = JSON.stringify(datos);
 
     try {
-      const response = await this.servicio.registrar(datosJson).toPromise();  
+      const response = await this.servicio.registrar(datosJson);
       console.log('Solicitud POST exitosa', response);
-      // Mostrar mensaje de éxito al usuario
       alert('La solicitud se ha enviado con éxito.');
-      this.mensajeDelBackend = response.message; // Actualizar mensaje del backend en el componente
     } catch (error) {
-      // Mostrar mensaje de error al usuario
       console.error('Error:', error);
       alert('Se ha producido un error al enviar la solicitud.');
     }
