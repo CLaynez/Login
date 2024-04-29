@@ -26,3 +26,8 @@
   background-color: #4CAF50; /* Color de fondo */
   color: white; /* Color del texto */
 }
+
+.navbar .idioma {
+  /* Estilos específicos para los enlaces de idioma */
+  float: right;
+}
