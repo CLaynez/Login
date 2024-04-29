@@ -1,4 +1,12 @@
 {
     "Log In": "Log In",
-    "Sign In": "Sign In"
-}
+    "Sign In": "Sign In",
+    "Email": "Email",
+    "Password": "Password",
+    "Repeat the password": "Repeat the password",
+    "Invalid E-mail": "Invalid E-mail",
+    "Welcome to My Application": "Welcome to My Application",
+    "Thanks for logging in.": "Thanks for logging in.",
+    "Logout": "Logout"
+  }
+  

@@ -7,9 +7,9 @@
 </head>
 <body>
   <div class="container">
-    <h1>Bienvenido a Mi Aplicación</h1>
-    <p>Gracias por iniciar sesión.</p>
-    <button (click)="logout()">Logout</button>
+    <h1>{{ 'Welcome to My Application' | translate }}</h1>
+    <p>{{ 'Thanks for logging in.' | translate }}</p>
+    <button (click)="logout()">{{ 'Logout' | translate }}</button>
   </div>
 </body>
 </html>
