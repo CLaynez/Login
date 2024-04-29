@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ServicioService } from '../services/servicio.service';
 
 @Component({
   selector: 'app-barrita',
@@ -7,8 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./barrita.component.css']
 })
 export class BarritaComponent {
+changeLanguage(language: string) {
+  this.servicio.switchLanguage(language);
+}
 
-  constructor (public router:Router){
+  constructor (public router:Router, private servicio: ServicioService){
     
   }
 }

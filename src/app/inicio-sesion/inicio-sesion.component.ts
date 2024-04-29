@@ -1,6 +1,5 @@
 import { Component} from '@angular/core';
 import { ServicioService } from '../services/servicio.service';
-import { AuthServiceService } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -14,7 +13,7 @@ export class InicioSesionComponent {
   passwordmaxLength: number = 20;
   minLength: number = 5;
 
-  constructor(private servicio: ServicioService, private auth:AuthServiceService) {}
+  constructor(private servicio: ServicioService) {}
 
   validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
