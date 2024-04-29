@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,16 +10,14 @@ export class ServicioService {
   
   urlinicio: string = "http://localhost:8008/loginaso/recibo";
   urlregistro: string = "http://localhost:8008/loginaso/register";
-  urlmenu: string = "http://localhost:8008/menu";
   
-  constructor(private http: HttpClient, private auth:AuthServiceService) { }
+  constructor(private http: HttpClient, private auth:AuthServiceService, private router: Router) { }
 
   iniciarSesion(data: any) {
-    
     return this.http.post<any>(this.urlinicio, data).subscribe(response => {
       if (response && response.token) {
         this.auth.guardarTokenJWT(response.token);
-        this.abrirMenu(this.auth.obtenerTokenJWT());
+        this.router.navigate(['/home']);
       }else{
         alert('No hay token');
       }
@@ -31,13 +30,6 @@ export class ServicioService {
       if (response && response.token) {
         this.auth.guardarTokenJWT(response.token);
       }
-    });
-  }
-
-  abrirMenu(token: string | null) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<any>(this.urlmenu, token).subscribe(response => {
-      
     });
   }
 }

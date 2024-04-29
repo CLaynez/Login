@@ -1,7 +1,6 @@
 import { Component} from '@angular/core';
 import { ServicioService } from '../services/servicio.service';
 import { AuthServiceService } from '../services/auth-service.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -15,7 +14,7 @@ export class InicioSesionComponent {
   passwordmaxLength: number = 20;
   minLength: number = 5;
 
-  constructor(private servicio: ServicioService, private auth:AuthServiceService, private router: Router) {}
+  constructor(private servicio: ServicioService, private auth:AuthServiceService) {}
 
   validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -30,9 +29,7 @@ export class InicioSesionComponent {
       };
       let datosJson: string = JSON.stringify(datos);
       try {
-        await this.servicio.iniciarSesion(datosJson);
-        this.router.navigate(['/home']);
-        alert('La solicitud se ha enviado con éxito.');
+        this.servicio.iniciarSesion(datosJson);
       } catch (error) {
         console.error('Error:', error);
         alert('Se ha producido un error al enviar la solicitud.');
