@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { BarritaComponent } from './barrita/barrita.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ServicioService } from './services/servicio.service';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';

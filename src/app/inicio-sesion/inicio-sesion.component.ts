@@ -17,11 +17,11 @@ export class InicioSesionComponent {
 
   validarEmail(): boolean {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.login();
     return regex.test(this.email);
   }
 
   async login() {
+    if(this.validarEmail()){
       let datos: any = {
         email: this.email,
         password: this.password
@@ -34,4 +34,5 @@ export class InicioSesionComponent {
         alert('Se ha producido un error al enviar la solicitud.');
       }
     }
+  }
 }

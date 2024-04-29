@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,9 @@ export class ServicioService {
   }
 
   iniciarSesion(data: any) {
-    return this.http.post<any>(this.urlinicio, data).subscribe(response => {
+    return this.http
+    .post<any>(this.urlinicio, data)
+    .subscribe(response => {
       if (response && response.token) {
         this.auth.guardarTokenJWT(response.token);
         this.router.navigate(['/home']);
