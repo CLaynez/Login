@@ -11,13 +11,15 @@ import { FormsModule } from '@angular/forms';
 import { ServicioService } from './services/servicio.service';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { AuthServiceService } from './services/auth-service.service';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InicioSesionComponent,
     RegistroComponent,
-    BarritaComponent
+    BarritaComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
