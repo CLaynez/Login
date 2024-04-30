@@ -30,4 +30,5 @@
 .navbar .idioma {
   /* Estilos específicos para los enlaces de idioma */
   float: right;
+  cursor: pointer;
 }

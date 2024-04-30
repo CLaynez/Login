@@ -27,12 +27,7 @@ export class InicioSesionComponent {
         password: this.password
       };
       let datosJson: string = JSON.stringify(datos);
-      try {
-        this.servicio.iniciarSesion(datosJson);
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Se ha producido un error al enviar la solicitud.');
-      }
+      this.servicio.iniciarSesion(datosJson);
     }
   }
 }
