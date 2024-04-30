@@ -1,0 +1,58 @@
+{
+  "home": {
+    "menu": {
+      "user": "Usuarios",
+      "business": "Empresas",
+      "they_are_hiring": "Están contratando",
+      "taalent_agency": "Taalent Agency",
+      "login": "Entra",
+      "sign_up": "Regístrate",
+      "contact": "Contacto",
+      "blog": "Blog"
+    },
+    "company_wizard": {
+      "account": "Crea una cuenta para tu empresa y,",
+      "verify": "tras verificar tu correo,",
+      "profile": "podrás empezar a completar tu perfil y publicar contenido y ofertas de empleo.",
+      "data": "Datos de la cuenta",
+      "terms": "Términos legales",
+      "success": "Cuenta de empresa creada con éxito",
+      "close": "Cerrar"
+    },
+    "call_action": {
+      "title": "Talento y tecnología",
+      "text": "Únete a la Comunidad del Talento que está liderando el cambio.",
+      "link": "Descubre tu oportunidad"
+    },
+    "call_action_business": {
+      "title": "¡EL TALENTO QUE NECESITAS, MÁS ACCESIBLE QUE NUNCA!",
+      "text": "Hacemos que te lleguen solo los candidatos que de verdad valen para tu oferta de trabajo. ¡Olvídate de las largas horas de selección!",
+      "link": "Registra tu empresa"
+    },
+    "call_action_taalenthunter": {
+      "title": "¿Listo para ser Taalenthunter?",
+      "text": "En Taalentfy, gana dinero invitando amigos a unirse. Además, si contratan a alguno de ellos, te llevarás un pellizquito. ¡Es tan simple como suena!",
+      "link": "Empezar"
+    },
+    "different": {
+      "title": "Todo tu talento no cabe en un CV.",
+      "show_title": "Muéstrale al mundo todo lo que sabes hacer...",
+      "show_text": "...y conviértete en el candidato más solicitado. ¡Pero no te quedes solo en eso! Sabemos que es importante que conozcas todo tu potencial y por eso te damos las herramientas necesarias para conocerte más allá del CV técnico. ¿Te unes?",
+      "profile_title": "Conoce tus puntos fuertes y sácales partido",
+      "profile_text": "¿Sabes de qué color es tu cerebro y cuáles son tus soft skills? ¿Pones en valor tus verdaderos talentos? Compruébalo con nuestros diagnósticos <strong>Taalent Personality Test y Smart Taalent Assessment.</strong> Sabrás cuáles son tus mejores cualidades y en qué entornos podrás desarrollarlas al máximo.",
+      "match_title": "¡A la carta!",
+      "match_text": "Nuestra inteligencia artificial te mostrará las mejores oportunidades formativas y laborales en función de tu talento. Se acabaron las vacantes que no se ajusten a ti. <strong>Perfect match!</strong><br>Además, nuestro sistema de machine learning hará que te topes con los mejores perfiles, complementado tu formación y agrandando tu círculo de contactos.",
+      "referrals_title": "Gana dinero recomendando ofertas de empleo",
+      "referrals_text": "Saca al <strong>Cazatalentos</strong> que hay en ti y <strong>ayuda a tus conocidos a encontrar trabajo.</strong> Conviértete en Taalent Hunter y conéctalos con nuestras oportunidades de trabajo. ¡Llévate recompensas a cambio! ¿Te apuntas?",
+      "recommend_me": "<strong>Oportunidades laborales</strong> (puestos de trabajo o proyectos) afines a tus conocimientos y perfil competencial.¡¡El talento no está en el CV, demuéstralo y consigue <strong>un excelente match!!</strong>",
+      "inspire_me": "<strong>Contenido de aprendizaje</strong> de calidad (cursos, vídeos, artículos, libros,…) para potenciar tus mejores conocimientos.<br><strong>Olvídate de pasar el día buscando en plataformas</strong>",
+      "related": "<strong>Personas</strong> complementarias o afines a tu perfil.<br>¡Quizás encuentras al <strong>compañero de viaje</strong> que necesitabas para hacer realidad tu sueño!",
+      "tribe": "<strong>Tribus de conocimiento</strong> donde te sientas como en casa, discusiones, debates, conocimiento y <strong>mucha colaboración.</strong><br><strong>Quién sabe si por un debate consigues la solución que tanto buscabas</strong>",
+      "discover_it": {
+        "title": "El futuro lo van a construir las personas con <strong>talento.</strong> ¡Tú estás entre ellas!",
+        "text_2": "Accede <strong>totalmente gratis</strong> a la <strong>Comunidad del Talento</strong> y a nuestras herramientas internas y de orientación para descubrir y desarrollar tus talentos. Muéstrale a las empresas lo que vales y dedícate a lo que de verdad te <strong>apasiona.</strong>",
+        "link": "¡Descúbrelo ya!"
+      }
+    }
+  }
+}
