@@ -18,16 +18,10 @@ class ScriptJson {
             try{
                 if (fs.existsSync(respuesta)) {
                     // Verificar la extensión del archivo
-                    if (respuesta.endsWith('.js') || respuesta.endsWith('.html')) {
-                        // Leer el archivo
-                        fs.readFile(respuesta, 'utf8', (error, data) => {
-                            if (error) {
-                                console.error('Error al leer el archivo:', error);
-                            } else {
-                                console.log('Contenido del archivo:');
-                                console.log(data);
-                            }
-                        });
+                    if (respuesta.endsWith('.ts')){
+                        this.leerJavaScript(respuesta);
+                    }else if(respuesta.endsWith('.html')) {
+                        this.leerHtml(respuesta);
                     } else {
                         console.log('El archivo debe ser HTML o JavaScript (.js)');
                         this.cerrarInterfaz();
@@ -62,21 +56,61 @@ class ScriptJson {
         });
     }
 
+    leerJavaScript(respuesta){
+        fs.readFile(respuesta, 'utf8', (error, data) => {
+            if (error) {
+                console.error('Error al leer el archivo:', error);
+            } else {
+                console.log('Contenido del archivo:');
+                console.log(data);
+            }
+        });
+    }
+
+    leerHtml(respuesta){
+        fs.readFile(respuesta, 'utf8', (error, data) => {
+            if (error) {
+                console.error('Error al leer el archivo:', error);
+            } else {
+                // Utilizar expresión regular para encontrar la etiqueta
+                const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
+                let match;
+                const etiquetas = [];
+
+                // Buscar todas las etiquetas en el contenido del archivo
+                while ((match = regex.exec(data)) !== null) {
+                    const etiqueta = match[1]; // Obtener el texto entre comillas simples
+                    etiquetas.push(etiqueta);
+                }
+
+                // Mostrar las etiquetas encontradas
+                if (etiquetas.length > 0) {
+                    console.log('Etiquetas encontradas:');
+                    etiquetas.forEach((etiqueta) => {
+                        console.log(etiqueta);
+                    });
+                } else {
+                    console.log('No se encontraron etiquetas.');
+                }
+            }
+        });
+    }
+
     cerrarInterfaz() {
         this.rl.close();
     }
 
-    leerJson(objeto, nivel = 0){
+    leerJson(objeto, padre = '', nivel = 0){
         for (const clave in objeto) {
             if (objeto.hasOwnProperty(clave)) {
                 const valor = objeto[clave];
     
                 // Imprimir la propiedad con indentación según el nivel de profundidad
-                //console.log(`${' '.repeat(nivel * 2)}${clave}:`);
+                console.log(`${padre}.${clave}:`);
     
                 // Si el valor es un objeto (es decir, tiene propiedades), llamar recursivamente
                 if (typeof valor === 'object' && valor !== null) {
-                    this.leerJson(valor, nivel + 1); // Llamada recursiva con nivel incrementado
+                    this.leerJson(valor, clave, nivel + 1); // Llamada recursiva con nivel incrementado
                 } else {
                     // Si el valor no es un objeto, imprimir el valor
                     //console.log(clave);
