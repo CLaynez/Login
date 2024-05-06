@@ -34,7 +34,7 @@ class ScriptJson {
                     // Read en.json
                     fs.readFile(this.languageJson, 'utf8', (error, data) => {
                         if (error) {
-                            console.error('Error reading JSON file:', error);
+                            console.error('Error reading JSON file:');
                             this.closeInterface();
                             return;
                         }
@@ -53,7 +53,7 @@ class ScriptJson {
                     this.closeInterface();
                 }
             } catch (e) {
-                console.log('Error:', e);
+                console.log('Error when reading file, check if you have insert a valid path');
                 this.closeInterface();
             }            
         });
@@ -63,15 +63,19 @@ class ScriptJson {
         const coincidences = {};
         const noCoincidences = {};
 
-        // Run every key in the JSON file and fill both json
-        for(const key in this.languageJson){
-            const coincidencia = this.searchedArray.includes(key);
+        try{
+            // Run every key in the JSON file and fill both json
+            for(const key in this.languageJson){
+                const coinc = this.searchedArray.includes(key);
 
-            if (coincidencia) {
-                coincidences[key] = this.languageJson[key];
-            } else {
-                noCoincidences[key] = this.languageJson[key];
+                if (coinc) {
+                    coincidences[key] = this.languageJson[key];
+                } else {
+                    noCoincidences[key] = this.languageJson[key];
+                }
             }
+        }catch{
+            console.log('Error looking for coincidences');
         }
         
         //Some testing here
@@ -121,7 +125,7 @@ class ScriptJson {
         // Write file content
         fs.writeFile(outputFile, jsonData, 'utf8', (err) => {
             if (err) {
-                console.error('Error generating the file', err);
+                console.error('Error generating the file');
             } else {
                 console.log(`File '${outputFile}' created succesfully.`);
             }
@@ -131,7 +135,7 @@ class ScriptJson {
     readTypescript(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
-                console.error('Error reading the file:', error);
+                console.error('Error reading the file:');
             } else {
                 // Use a regular expression to find occurrences of this.translate.instant('')
                 const regex = /this\.translate\.instant\(\s*'([^']+)'\s*\)/g;
@@ -160,7 +164,7 @@ class ScriptJson {
     readHtml(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
-                console.error('Error reading the file:', error);
+                console.error('Error reading the file:');
             } else {
                 // Use a regular expresion to find the label
                 const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
