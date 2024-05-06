@@ -14,44 +14,42 @@ class ScriptJson {
     }
 
     openFiles() {
-        // Pedir al usuario que ingrese la ruta del archivo
+        // Ask the user to introduce the path
         this.rl.question('Inserte la ruta del archivo que desea abrir: ', (respuesta) => {
-            // Abrir archivo ingresado por el usuario
+            // Open the path introduced by the user
             try {
                 //Hay que insertar un directorio y entrar en los archivos internos
                 if (fs.existsSync(respuesta)) {
-                    // Verificar la extensión del archivo
+                    // Verify the file type
                     if (respuesta.endsWith('.ts')) {
                         this.readJavascript(respuesta);
                     } else if (respuesta.endsWith('.html')) {
                         this.readHtml(respuesta);
                     } else {
-                        console.log('El archivo debe ser HTML o TypeScript (.html o .ts)');
+                        console.log('File must be either HTML or TypeScript (.html or .ts)');
                         this.closeInterface();
                         return;
                     }
             
-                    // Leer archivo en.json
+                    // Read en.json
                     fs.readFile(this.languageJson, 'utf8', (error, data) => {
                         if (error) {
-                            console.error('Error al leer el archivo JSON:', error);
+                            console.error('Error reading JSON file:', error);
                             this.closeInterface();
                             return;
                         }
         
-                        // Analizar el contenido JSON
+                        // Analyze JSON content
                         this.languageJson = JSON.parse(data);
                         console.log(this.languageJson);
         
-                        // Llamar a la función para buscar coincidencias después de ambas lecturas
+                        // Call for coincidences to create both files
                         this.searchForCoincidences();
-        
-                        // Cerrar la interfaz después de completar todas las operaciones
                         this.closeInterface();
                     });
                     
                 } else {
-                    console.log('El archivo no existe.');
+                    console.log('File doesn`t exists');
                     this.closeInterface();
                 }
             } catch (e) {
@@ -65,7 +63,7 @@ class ScriptJson {
         const coincidences = {};
         const noCoincidences = {};
 
-        // Recorrer cada elemento del primer array
+        // Run every key in the JSON file and fill both json
         for(const key in this.languageJson){
             const coincidencia = this.searchedArray.includes(key);
 
@@ -76,6 +74,7 @@ class ScriptJson {
             }
         }
         
+        //Some testing here
         console.log(coincidences);
         console.log(noCoincidences);
 
@@ -87,18 +86,18 @@ class ScriptJson {
     }
 
     createNoCoincidences(noCoincidences){
-        // Nombre del archivo de salida
+        // Changing the content type to txt
         const textContent = this.convertObjectToText(noCoincidences);
 
-        // Nombre del archivo de salida
+        // File`s name
         const outputFile = 'noCoincidences.txt';
 
-        // Escribir el contenido en el archivo de texto
+        // Writing the new file
         fs.writeFile(outputFile, textContent, 'utf8', (err) => {
             if (err) {
-                console.error('Error al escribir el archivo de texto:', err);
+                console.error('Error generating the file', err);
             } else {
-                console.log(`Archivo '${outputFile}' creado con éxito.`);
+                console.log(`File '${outputFile}' created succesfully.`);
             }
         });
     }
@@ -116,15 +115,15 @@ class ScriptJson {
     createCoincidences(coincidences) {
         const outputFile = 'coincidences.json';
 
-        // Convertir el objeto JSON a una cadena JSON formateada
+        // Converting JSON object to a formated JSON string
         const jsonData = JSON.stringify(coincidences, null, 2);
 
-        // Escribir el contenido en el archivo
+        // Write file content
         fs.writeFile(outputFile, jsonData, 'utf8', (err) => {
             if (err) {
-                console.error('Error al escribir el archivo:', err);
+                console.error('Error generating the file', err);
             } else {
-                console.log(`Archivo '${outputFile}' creado con éxito.`);
+                console.log(`File '${outputFile}' created succesfully.`);
             }
         });
     }
@@ -132,9 +131,9 @@ class ScriptJson {
     readJavascript(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
-                console.error('Error al leer el archivo:', error);
+                console.error('Error reading the file:', error);
             } else {
-                console.log('Contenido del archivo:');
+                console.log('File`s content:');
                 console.log(data);
             }
         });
@@ -143,26 +142,26 @@ class ScriptJson {
     readHtml(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
-                console.error('Error al leer el archivo:', error);
+                console.error('Error reading the file:', error);
             } else {
-                // Utilizar expresión regular para encontrar la etiqueta
+                // Use a regular expresion to find the label
                 const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
                 let match;
 
-                // Buscar todas las etiquetas en el contenido del archivo
+                // Find every label in the file
                 while ((match = regex.exec(data)) !== null) {
-                    const etiqueta = match[1]; // Obtener el texto entre comillas simples
+                    const etiqueta = match[1];
                     this.searchedArray.push(etiqueta);
                 }
 
                 if (this.searchedArray.length > 0) {
-                    //Quitar duplicados
+                    //Delete duplicates
                     this.searchedArray = this.searchedArray.filter((item,index)=>{
                         return this.searchedArray.indexOf(item) === index;
                     })
                     
                 } else {
-                    console.log('No se encontraron etiquetas.');
+                    console.log('No labels found');
                 }
             }
         });
@@ -173,11 +172,11 @@ class ScriptJson {
     }
 }
 
-// Instancia y ejecuta el script
+// Instance and run the script
 const script = new ScriptJson();
 script.openFiles();
 
-// Manejar cierre de la interfaz readline al salir
+// Manage interface closing when finishing
 process.on('SIGINT', () => {
     script.closeInterface();
     process.exit();
