@@ -22,7 +22,7 @@ class ScriptJson {
                 if (fs.existsSync(respuesta)) {
                     // Verify the file type
                     if (respuesta.endsWith('.ts')) {
-                        this.readJavascript(respuesta);
+                        this.readTypescript(respuesta);
                     } else if (respuesta.endsWith('.html')) {
                         this.readHtml(respuesta);
                     } else {
@@ -128,13 +128,31 @@ class ScriptJson {
         });
     }
 
-    readJavascript(respuesta){
+    readTypescript(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
                 console.error('Error reading the file:', error);
             } else {
-                console.log('File`s content:');
-                console.log(data);
+                // Use a regular expression to find occurrences of this.translate.instant('')
+                const regex = /this\.translate\.instant\(\s*'([^']+)'\s*\)/g;
+                let match;
+                const searchedArray = [];
+    
+                // Find every match in the file
+                while ((match = regex.exec(data)) !== null) {
+                    const etiqueta = match[1];
+                    searchedArray.push(etiqueta);
+                }
+    
+                if (searchedArray.length > 0) {
+                    // Remove duplicates from the array
+                    const uniqueArray = [...new Set(searchedArray)];
+                    console.log('Found labels:', uniqueArray);
+                } else {
+                    console.log('No labels found.');
+                    this.closeInterface();
+                    return;
+                }
             }
         });
     }
