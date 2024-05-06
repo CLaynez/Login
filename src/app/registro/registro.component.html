@@ -3,12 +3,12 @@
 
 <div class="register">
   <form class="custom-form" (ngSubmit)="register()" method="post">
-    <h1>{{ 'Sign In' | translate }}</h1>
+    <h1>{{ 'sign_up' | translate }}</h1>
     <input type="email" name="email" placeholder="{{ 'Email' | translate }}" required maxlength="{{ emailmaxLength }}" [(ngModel)]="email" />
-    <span *ngIf="email && !validarEmail()">{{ 'Invalid E-mail' | translate }}</span>
+    <span *ngIf="email && !validarEmail()">{{ 'Invalid_E-mail' | translate }}</span>
     <input type="password" name="password" placeholder="{{ 'Password' | translate }}" required maxlength="{{ passwordmaxLength }}" [(ngModel)]="password" />
-    <input type="password" name="confirmPassword" placeholder="{{ 'Repeat the password' | translate }}" required maxlength="{{ passwordmaxLength }}" [(ngModel)]="confirmPassword" />
-    <button type="submit">{{ 'Sign In' | translate }}</button>
+    <input type="password" name="confirmPassword" placeholder="{{ 'Repeat_password' | translate }}" required maxlength="{{ passwordmaxLength }}" [(ngModel)]="confirmPassword" />
+    <button type="submit">{{ 'sign_up' | translate }}</button>
   </form>
 </div>
   </div>

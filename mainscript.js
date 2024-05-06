@@ -4,59 +4,132 @@ const readline = require('readline');
 class ScriptJson {
     
     constructor() {
-        this.jsonDiccPath = 'ejemploDicc.json';
+        this.languageJson = 'src\\assets\\i18n\\en.json';
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
+        this.searchedArray = [];
+        this.finalJson = {};
     }
 
-    abrirArchivos() {
+    openFiles() {
         // Pedir al usuario que ingrese la ruta del archivo
         this.rl.question('Inserte la ruta del archivo que desea abrir: ', (respuesta) => {
             // Abrir archivo ingresado por el usuario
-            try{
+            try {
+                //Hay que insertar un directorio y entrar en los archivos internos
                 if (fs.existsSync(respuesta)) {
                     // Verificar la extensión del archivo
-                    if (respuesta.endsWith('.ts')){
-                        this.leerJavaScript(respuesta);
-                    }else if(respuesta.endsWith('.html')) {
-                        this.leerHtml(respuesta);
+                    if (respuesta.endsWith('.ts')) {
+                        this.readJavascript(respuesta);
+                    } else if (respuesta.endsWith('.html')) {
+                        this.readHtml(respuesta);
                     } else {
-                        console.log('El archivo debe ser HTML o JavaScript (.js)');
-                        this.cerrarInterfaz();
+                        console.log('El archivo debe ser HTML o TypeScript (.html o .ts)');
+                        this.closeInterface();
+                        return;
                     }
+            
+                    // Leer archivo en.json
+                    fs.readFile(this.languageJson, 'utf8', (error, data) => {
+                        if (error) {
+                            console.error('Error al leer el archivo JSON:', error);
+                            this.closeInterface();
+                            return;
+                        }
+        
+                        // Analizar el contenido JSON
+                        this.languageJson = JSON.parse(data);
+                        console.log(this.languageJson);
+        
+                        // Llamar a la función para buscar coincidencias después de ambas lecturas
+                        this.searchForCoincidences();
+        
+                        // Cerrar la interfaz después de completar todas las operaciones
+                        this.closeInterface();
+                    });
+                    
                 } else {
                     console.log('El archivo no existe.');
-                    this.cerrarInterfaz();
+                    this.closeInterface();
                 }
-            // Abrir archivo ejemploDicc.json
-            fs.readFile(this.jsonDiccPath, 'utf8', (error, data) => {
-                if (error) {
-                    console.error('Error al leer el archivo JSON:', error);
-                } else {
-                    try {
-                        // Analizar el contenido JSON
-                        const jsonData = JSON.parse(data);
-            
-                        // Llamar a la función recursiva para leer todos los hijos del objeto JSON
-                        //console.log('Contenido del archivo JSON:');
-                        this.leerJson(jsonData);
-                        this.cerrarInterfaz();
-                    } catch (error) {
-                        console.error('Error al procesar el contenido JSON:', error);
-                    }
-                }
-            });
-            }catch{
-                console.log('No se encontró el archivo');
-            }finally{
-                this.cerrarInterfaz();
+            } catch (e) {
+                console.log('Error:', e);
+                this.closeInterface();
+            }            
+        });
+    }
+    
+    searchForCoincidences(){
+        const coincidences = {};
+        const noCoincidences = {};
+
+        // Recorrer cada elemento del primer array
+        for(const key in this.languageJson){
+            const coincidencia = this.searchedArray.includes(key);
+
+            if (coincidencia) {
+                coincidences[key] = this.languageJson[key];
+            } else {
+                noCoincidences[key] = this.languageJson[key];
+            }
+        }
+        
+        console.log(coincidences);
+        console.log(noCoincidences);
+
+        //Create coincidences.json
+        this.createCoincidences(coincidences);
+        
+        //Create noCoincidences.txt
+        this.createNoCoincidences(noCoincidences);
+    }
+
+    createNoCoincidences(noCoincidences){
+        // Nombre del archivo de salida
+        const textContent = this.convertObjectToText(noCoincidences);
+
+        // Nombre del archivo de salida
+        const outputFile = 'noCoincidences.txt';
+
+        // Escribir el contenido en el archivo de texto
+        fs.writeFile(outputFile, textContent, 'utf8', (err) => {
+            if (err) {
+                console.error('Error al escribir el archivo de texto:', err);
+            } else {
+                console.log(`Archivo '${outputFile}' creado con éxito.`);
             }
         });
     }
 
-    leerJavaScript(respuesta){
+    convertObjectToText(obj) {
+        let text = '';
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                text += `${key}: ${obj[key]}\n`;
+            }
+        }
+        return text;
+    }
+
+    createCoincidences(coincidences) {
+        const outputFile = 'coincidences.json';
+
+        // Convertir el objeto JSON a una cadena JSON formateada
+        const jsonData = JSON.stringify(coincidences, null, 2);
+
+        // Escribir el contenido en el archivo
+        fs.writeFile(outputFile, jsonData, 'utf8', (err) => {
+            if (err) {
+                console.error('Error al escribir el archivo:', err);
+            } else {
+                console.log(`Archivo '${outputFile}' creado con éxito.`);
+            }
+        });
+    }
+
+    readJavascript(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
                 console.error('Error al leer el archivo:', error);
@@ -67,7 +140,7 @@ class ScriptJson {
         });
     }
 
-    leerHtml(respuesta){
+    readHtml(respuesta){
         fs.readFile(respuesta, 'utf8', (error, data) => {
             if (error) {
                 console.error('Error al leer el archivo:', error);
@@ -75,20 +148,19 @@ class ScriptJson {
                 // Utilizar expresión regular para encontrar la etiqueta
                 const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
                 let match;
-                const etiquetas = [];
 
                 // Buscar todas las etiquetas en el contenido del archivo
                 while ((match = regex.exec(data)) !== null) {
                     const etiqueta = match[1]; // Obtener el texto entre comillas simples
-                    etiquetas.push(etiqueta);
+                    this.searchedArray.push(etiqueta);
                 }
 
-                // Mostrar las etiquetas encontradas
-                if (etiquetas.length > 0) {
-                    console.log('Etiquetas encontradas:');
-                    etiquetas.forEach((etiqueta) => {
-                        console.log(etiqueta);
-                    });
+                if (this.searchedArray.length > 0) {
+                    //Quitar duplicados
+                    this.searchedArray = this.searchedArray.filter((item,index)=>{
+                        return this.searchedArray.indexOf(item) === index;
+                    })
+                    
                 } else {
                     console.log('No se encontraron etiquetas.');
                 }
@@ -96,36 +168,17 @@ class ScriptJson {
         });
     }
 
-    cerrarInterfaz() {
+    closeInterface() {
         this.rl.close();
-    }
-
-    leerJson(objeto, padre = '', nivel = 0){
-        for (const clave in objeto) {
-            if (objeto.hasOwnProperty(clave)) {
-                const valor = objeto[clave];
-    
-                // Imprimir la propiedad con indentación según el nivel de profundidad
-                console.log(`${padre}.${clave}:`);
-    
-                // Si el valor es un objeto (es decir, tiene propiedades), llamar recursivamente
-                if (typeof valor === 'object' && valor !== null) {
-                    this.leerJson(valor, clave, nivel + 1); // Llamada recursiva con nivel incrementado
-                } else {
-                    // Si el valor no es un objeto, imprimir el valor
-                    //console.log(clave);
-                }
-            }
-        }
     }
 }
 
 // Instancia y ejecuta el script
 const script = new ScriptJson();
-script.abrirArchivos();
+script.openFiles();
 
 // Manejar cierre de la interfaz readline al salir
 process.on('SIGINT', () => {
-    script.cerrarInterfaz();
+    script.closeInterface();
     process.exit();
 });

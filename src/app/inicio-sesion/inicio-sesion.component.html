@@ -2,10 +2,10 @@
 
 <div class="login">
   <form class="custom-form">
-    <h1>{{ 'Log In' | translate }}</h1>
+    <h1>{{ 'login' | translate }}</h1>
     <input type="email" name="email" placeholder="{{ 'Email' | translate }}" [maxlength]="emailmaxLength" [minlength]="minLength" [(ngModel)]="email"/>
-    <span *ngIf="email && !validarEmail()">{{ 'Invalid E-mail' | translate }}</span>
+    <span *ngIf="email && !validarEmail()">{{ 'Invalid_E-mail' | translate }}</span>
     <input type="password" name="password" placeholder="{{ 'Password' | translate }}" [maxlength]="passwordmaxLength" [minlength]="minLength" [(ngModel)]="password"/>
-    <button (click)="login()">{{ 'Log In' | translate }}</button>
+    <button (click)="login()">{{ 'login' | translate }}</button>
   </form>
 </div>

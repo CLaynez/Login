@@ -1,12 +1,12 @@
 {
-    "Log In": "Iniciar sesión",
-    "Sign In": "Registrarse",
+    "login": "Iniciar sesión",
+    "sign_up": "Registrarse",
     "Email": "Correo electrónico",
     "Password": "Contraseña",
-    "Repeat the password": "Repetir la contraseña",
-    "Invalid E-mail": "Correo electrónico inválido",
-    "Welcome to My Application": "Bienvenido a Mi Aplicación",
-    "Thanks for logging in.": "Gracias por iniciar sesión.",
+    "Repeat_password": "Repetir la contraseña",
+    "Invalid_E-mail": "Correo electrónico inválido",
+    "Welcome": "Bienvenido a Mi Aplicación",
+    "Thanks": "Gracias por iniciar sesión.",
     "Logout": "Cerrar sesión"
   }
   
