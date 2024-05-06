@@ -15,7 +15,7 @@ class ScriptJson {
 
     openFiles() {
         // Ask the user to introduce the path
-        this.rl.question('Inserte la ruta del archivo que desea abrir: ', (respuesta) => {
+        this.rl.question('Insert the file path you want to test: ', (respuesta) => {
             // Open the path introduced by the user
             try {
                 //Hay que insertar un directorio y entrar en los archivos internos
