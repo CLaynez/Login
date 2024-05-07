@@ -15,10 +15,10 @@ class ScriptJson {
     }
 
     openFiles() {
-        // Ask the user to introduce the path
+        // Pregunta al usuario la direccion
         this.rl.question('Insert the file path you want to test: ', (path) => {
             try {
-                // Open the path introduced by the user
+                // Comprueba si la direccion es válida
                 const stats = fs.statSync(path);
                 if (stats.isFile()) {
                     this.readFile(path);
@@ -26,7 +26,7 @@ class ScriptJson {
                 else if (stats.isDirectory()) {
                     this.readDirectory(path);
                 }
-                // Read en.json
+                // Lee el json de la variable
                 try {
                     const jsonData = fs.readFileSync(this.json, 'utf8');
                     this.json = JSON.parse(jsonData);
@@ -77,7 +77,6 @@ class ScriptJson {
         const noCoincidences = {};
 
         try{
-            // Run every key in the JSON file and fill both json
             console.log(this.searchedArray);
             for(const key in this.json){
                 const coinc = this.searchedArray.includes(key);
@@ -104,13 +103,13 @@ class ScriptJson {
     }
 
     createNoCoincidences(noCoincidences){
-        // Changing the content type to txt
+        // Cambia el tipo a txt
         const textContent = this.convertObjectToText(noCoincidences);
 
-        // File`s name
+        // Nombre del fichero
         const outputFile = 'noCoincidences.txt';
 
-        // Writing the new file
+        // Escribe en el fichero
         fs.writeFile(outputFile, textContent, 'utf8', (err) => {
             if (err) {
                 console.error('Error generating the file', err);
@@ -133,10 +132,10 @@ class ScriptJson {
     createCoincidences(coincidences) {
         const outputFile = 'coincidences.json';
 
-        // Converting JSON object to a formated JSON string
+        // Convierte el objeto JSON al formato adecuado para el archivo
         const jsonData = JSON.stringify(coincidences, null, 2);
 
-        // Write file content
+        // Escribe el contendio del archivo
         fs.writeFile(outputFile, jsonData, 'utf8', (err) => {
             if (err) {
                 console.error('Error generating the file');
@@ -150,18 +149,18 @@ class ScriptJson {
         try {
             const data = fs.readFileSync(typePath, 'utf8');
         
-            // Use a regular expression to find occurrences of this.translate.instant('')
+            // Usa la expresion regular que filtra el html
             const regex = /this\.translate\.instant\(\s*'([^']+)'\s*\)/g;
             let match;
         
-            // Find every match in the file
+            // Añade cada coincidencia al array
             while ((match = regex.exec(data)) !== null) {
                 const etiqueta = match[1];
                 this.searchedArray.push(etiqueta);
             }
         
             if (this.searchedArray.length > 0) {
-                // Remove duplicates from the array
+                // Quita los duplicados del array
                 const uniqueArray = [...new Set(this.searchedArray)];
                 this.searchedArray.push(...uniqueArray);
             }
@@ -175,11 +174,11 @@ class ScriptJson {
         try {
             const data = fs.readFileSync(htmlPath, 'utf8');
         
-            // Use a regular expression to find labels like {{ 'label' | translate }}
+            // Usa la expresion regular para filtrar en el ts
             const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
             let match;
         
-            // Find every label in the file
+            // Añade los encontrados al array
             while ((match = regex.exec(data)) !== null) {
                 const label = match[1];
                 this.searchedArray.push(label);
@@ -187,7 +186,7 @@ class ScriptJson {
             }
         
             if (this.searchedArray.length > 0) {
-                // Remove duplicates from the array
+                // Quita los duplicados
                 this.searchedArray.filter((item, index) => {
                     return this.searchedArray.indexOf(item) === index;
                 });
@@ -203,11 +202,11 @@ class ScriptJson {
     }
 }
 
-// Instance and run the script
+// Instancia y ejecuta la script
 const script = new ScriptJson();
 script.openFiles();
 
-// Manage interface closing when finishing
+// Cierra la script una vez termina
 process.on('SIGINT', () => {
     script.closeInterface();
     process.exit();
