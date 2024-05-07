@@ -62,9 +62,9 @@ class ScriptJson {
                 const stats = fs.statSync(filePath);
     
                 if (stats.isDirectory()) {
-                    this.readDirectory(filePath); // Recursivamente leer directorios internos
+                    this.readDirectory(filePath);
                 } else if (stats.isFile()) {
-                    this.readFile(filePath); // Procesar archivos dentro del directorio
+                    this.readFile(filePath);
                 }
             });
         } catch (error) {
@@ -163,7 +163,7 @@ class ScriptJson {
             if (this.searchedArray.length > 0) {
                 // Remove duplicates from the array
                 const uniqueArray = [...new Set(this.searchedArray)];
-                this.searchedArray.push(...uniqueArray); // Agregar elementos únicos al arreglo principal
+                this.searchedArray.push(...uniqueArray);
             }
         } catch (error) {
             console.error('Error reading the file or processing data:', error);
@@ -181,8 +181,8 @@ class ScriptJson {
         
             // Find every label in the file
             while ((match = regex.exec(data)) !== null) {
-                const etiqueta = match[1];
-                this.searchedArray.push(etiqueta);
+                const label = match[1];
+                this.searchedArray.push(label);
                 console.log(this.searchedArray);
             }
         
