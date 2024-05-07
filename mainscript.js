@@ -1,10 +1,11 @@
 const fs = require('fs');
+const path = require('path');
 const readline = require('readline');
 
 class ScriptJson {
     
     constructor() {
-        this.languageJson = 'src\\assets\\i18n\\en.json';
+        this.json = 'src\\assets\\i18n\\en.json';
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
@@ -15,41 +16,26 @@ class ScriptJson {
 
     openFiles() {
         // Ask the user to introduce the path
-        this.rl.question('Insert the file path you want to test: ', (respuesta) => {
-            // Open the path introduced by the user
+        this.rl.question('Insert the file path you want to test: ', (path) => {
             try {
-                //Hay que insertar un directorio y entrar en los archivos internos
-                if (fs.existsSync(respuesta)) {
-                    // Verify the file type
-                    if (respuesta.endsWith('.ts')) {
-                        this.readTypescript(respuesta);
-                    } else if (respuesta.endsWith('.html')) {
-                        this.readHtml(respuesta);
-                    } else {
-                        console.log('File must be either HTML or TypeScript (.html or .ts)');
-                        this.closeInterface();
-                        return;
-                    }
-            
-                    // Read en.json
-                    fs.readFile(this.languageJson, 'utf8', (error, data) => {
-                        if (error) {
-                            console.error('Error reading JSON file:');
-                            this.closeInterface();
-                            return;
-                        }
-        
-                        // Analyze JSON content
-                        this.languageJson = JSON.parse(data);
-                        console.log(this.languageJson);
-        
-                        // Call for coincidences to create both files
-                        this.searchForCoincidences();
-                        this.closeInterface();
-                    });
-                    
-                } else {
-                    console.log('File doesn`t exists');
+                // Open the path introduced by the user
+                const stats = fs.statSync(path);
+                if (stats.isFile()) {
+                    this.readFile(path);
+                }
+                else if (stats.isDirectory()) {
+                    this.readDirectory(path);
+                }
+                // Read en.json
+                try {
+                    const jsonData = fs.readFileSync(this.json, 'utf8');
+                    this.json = JSON.parse(jsonData);
+                    console.log(this.json);
+                
+                    this.searchForCoincidences();
+                    this.closeInterface();
+                } catch (error) {
+                    console.error('Error reading or parsing JSON file:', error);
                     this.closeInterface();
                 }
             } catch (e) {
@@ -58,6 +44,33 @@ class ScriptJson {
             }            
         });
     }
+
+    readFile(path){
+        if (path.endsWith('.ts')) {
+            this.readTypescript(path);
+        } else if (path.endsWith('.html')) {
+            this.readHtml(path);
+        }
+    }
+
+    readDirectory(dirPath){
+        try {
+            const files = fs.readdirSync(dirPath);
+    
+            files.forEach((file) => {
+                const filePath = path.join(dirPath, file);
+                const stats = fs.statSync(filePath);
+    
+                if (stats.isDirectory()) {
+                    this.readDirectory(filePath); // Recursivamente leer directorios internos
+                } else if (stats.isFile()) {
+                    this.readFile(filePath); // Procesar archivos dentro del directorio
+                }
+            });
+        } catch (error) {
+            console.error('Error reading directory:', error);
+        }
+    }
     
     searchForCoincidences(){
         const coincidences = {};
@@ -65,13 +78,14 @@ class ScriptJson {
 
         try{
             // Run every key in the JSON file and fill both json
-            for(const key in this.languageJson){
+            console.log(this.searchedArray);
+            for(const key in this.json){
                 const coinc = this.searchedArray.includes(key);
 
                 if (coinc) {
-                    coincidences[key] = this.languageJson[key];
+                    coincidences[key] = this.json[key];
                 } else {
-                    noCoincidences[key] = this.languageJson[key];
+                    noCoincidences[key] = this.json[key];
                 }
             }
         }catch{
@@ -132,61 +146,56 @@ class ScriptJson {
         });
     }
 
-    readTypescript(respuesta){
-        fs.readFile(respuesta, 'utf8', (error, data) => {
-            if (error) {
-                console.error('Error reading the file:');
-            } else {
-                // Use a regular expression to find occurrences of this.translate.instant('')
-                const regex = /this\.translate\.instant\(\s*'([^']+)'\s*\)/g;
-                let match;
-                const searchedArray = [];
-    
-                // Find every match in the file
-                while ((match = regex.exec(data)) !== null) {
-                    const etiqueta = match[1];
-                    searchedArray.push(etiqueta);
-                }
-    
-                if (searchedArray.length > 0) {
-                    // Remove duplicates from the array
-                    const uniqueArray = [...new Set(searchedArray)];
-                    console.log('Found labels:', uniqueArray);
-                } else {
-                    console.log('No labels found.');
-                    this.closeInterface();
-                    return;
-                }
+    readTypescript(typePath){
+        try {
+            const data = fs.readFileSync(typePath, 'utf8');
+        
+            // Use a regular expression to find occurrences of this.translate.instant('')
+            const regex = /this\.translate\.instant\(\s*'([^']+)'\s*\)/g;
+            let match;
+        
+            // Find every match in the file
+            while ((match = regex.exec(data)) !== null) {
+                const etiqueta = match[1];
+                this.searchedArray.push(etiqueta);
             }
-        });
+        
+            if (this.searchedArray.length > 0) {
+                // Remove duplicates from the array
+                const uniqueArray = [...new Set(this.searchedArray)];
+                this.searchedArray.push(...uniqueArray); // Agregar elementos únicos al arreglo principal
+            }
+        } catch (error) {
+            console.error('Error reading the file or processing data:', error);
+            this.closeInterface();
+        }        
     }
 
-    readHtml(respuesta){
-        fs.readFile(respuesta, 'utf8', (error, data) => {
-            if (error) {
-                console.error('Error reading the file:');
-            } else {
-                // Use a regular expresion to find the label
-                const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
-                let match;
-
-                // Find every label in the file
-                while ((match = regex.exec(data)) !== null) {
-                    const etiqueta = match[1];
-                    this.searchedArray.push(etiqueta);
-                }
-
-                if (this.searchedArray.length > 0) {
-                    //Delete duplicates
-                    this.searchedArray = this.searchedArray.filter((item,index)=>{
-                        return this.searchedArray.indexOf(item) === index;
-                    })
-                    
-                } else {
-                    console.log('No labels found');
-                }
+    readHtml(htmlPath){
+        try {
+            const data = fs.readFileSync(htmlPath, 'utf8');
+        
+            // Use a regular expression to find labels like {{ 'label' | translate }}
+            const regex = /{{\s*'([^']+)'\s*\|\s*translate\s*}}/g;
+            let match;
+        
+            // Find every label in the file
+            while ((match = regex.exec(data)) !== null) {
+                const etiqueta = match[1];
+                this.searchedArray.push(etiqueta);
+                console.log(this.searchedArray);
             }
-        });
+        
+            if (this.searchedArray.length > 0) {
+                // Remove duplicates from the array
+                this.searchedArray.filter((item, index) => {
+                    return this.searchedArray.indexOf(item) === index;
+                });
+            }
+        } catch (error) {
+            console.error('Error reading the file or processing data:', error);
+        }
+        
     }
 
     closeInterface() {
