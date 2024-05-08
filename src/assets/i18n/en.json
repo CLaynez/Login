@@ -1,12 +1,11 @@
 {
-    "login": "Log In",
-    "sign_up": "Sign Up",
-    "Email": "Email",
-    "Password": "Password",
-    "Repeat_password": "Repeat the password",
-    "Invalid_E-mail": "Invalid E-mail",
-    "Welcome": "Welcome to My Application",
-    "Thanks": "Thanks for logging in.",
-    "Logout": "Logout"
-  }
-  
+  "login": "Log In",
+  "sign_up": "Sign Up",
+  "Email": "Email",
+  "Password": "Password",
+  "Repeat_password": "Repeat the password",
+  "Invalid_E-mail": "Invalid E-mail",
+  "Welcome": "Welcome to My Application",
+  "Thanks": "Thanks for logging in.",
+  "Logout": "Logout"
+}

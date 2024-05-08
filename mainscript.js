@@ -16,7 +16,7 @@ class ScriptJson {
 
     openFiles() {
         // Pregunta al usuario la direccion
-        this.rl.question('Insert the file path you want to test: ', (path) => {
+        this.rl.question('Insert the path you want to test: ', (path) => {
             try {
                 // Comprueba si la direccion es válida
                 const stats = fs.statSync(path);
@@ -26,11 +26,11 @@ class ScriptJson {
                 else if (stats.isDirectory()) {
                     this.readDirectory(path);
                 }
+
                 // Lee el json de la variable
                 try {
                     const jsonData = fs.readFileSync(this.json, 'utf8');
                     this.json = JSON.parse(jsonData);
-                    console.log(this.json);
                 
                     this.searchForCoincidences();
                     this.closeInterface();
@@ -76,33 +76,47 @@ class ScriptJson {
         const coincidences = {};
         const noCoincidences = {};
 
-        try{
-            console.log(this.searchedArray);
-            for(const key in this.json){
-                const coinc = this.searchedArray.includes(key);
+        //Recursivamente busca las coincidencias y las añade
+        this.fillArraysCoinc(this.json, coincidences, noCoincidences);
+        
+        //Crea coincidences.json
+        this.createCoincidences(coincidences);
+        
+        //Crea noCoincidences.txt
+        this.createNoCoincidences(noCoincidences);
+    }
 
-                if (coinc) {
-                    coincidences[key] = this.json[key];
-                } else {
-                    noCoincidences[key] = this.json[key];
+    fillArraysCoinc(json, coincidences, noCoincidences, path = ''){
+        try{
+            for (const key in json) {
+                if (json.hasOwnProperty(key)) {
+                    
+                    // Construir la ruta completa
+                    const fullPath = path ? `${path}.${key}` : key;
+
+                    //Si es un objeto, entra otra vez al método
+                    if (typeof json[key] === 'object' && json[key] !== null) {
+                        this.fillArraysCoinc(json[key], coincidences, noCoincidences, fullPath);
+                    }else{
+                        // Verificar si la ruta completa coincide con algún elemento del array
+                        const coinc = this.searchedArray.includes(fullPath);
+            
+                        // Si hay coincidencia, agregar al objeto de coincidencias, si no al otro
+                        if (coinc) {
+                            coincidences[fullPath] = json[key];
+                        } else {
+                            noCoincidences[fullPath] = json[key];
+                        }
+                    }
                 }
             }
         }catch{
             console.log('Error looking for coincidences');
         }
-        
-        //Some testing here
-        console.log(coincidences);
-        console.log(noCoincidences);
-
-        //Create coincidences.json
-        this.createCoincidences(coincidences);
-        
-        //Create noCoincidences.txt
-        this.createNoCoincidences(noCoincidences);
     }
 
     createNoCoincidences(noCoincidences){
+
         // Cambia el tipo a txt
         const textContent = this.convertObjectToText(noCoincidences);
 
@@ -182,7 +196,6 @@ class ScriptJson {
             while ((match = regex.exec(data)) !== null) {
                 const label = match[1];
                 this.searchedArray.push(label);
-                console.log(this.searchedArray);
             }
         
             if (this.searchedArray.length > 0) {
@@ -192,7 +205,7 @@ class ScriptJson {
                 });
             }
         } catch (error) {
-            console.error('Error reading the file or processing data:', error);
+            console.error('Error reading the file or processing data:');
         }
         
     }
